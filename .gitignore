@@ -1,0 +1,17 @@
+sociodatabotvenv/
+./sociodatabotvenv
+sociodatabotvenv
+.sociodatabotvenv
+**/*.pyc
+**/*.zip
+**/*.shp
+**/*.cpg
+**/*.prj
+**/*.xml
+**/*.shx
+**/*.dbf
+**/*.sbx
+**/*.sbn
+**/*.xlsx
+**/*.dbc
+**/*.cst
