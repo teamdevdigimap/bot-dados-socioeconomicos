@@ -25,19 +25,19 @@ RUN apt-get update && apt-get install -y \
     fonts-liberation \
     libappindicator1 \
     libindicator7 \
-    python3.8 \
-    python3.8-distutils \
+    python3.9 \
+    python3.9-distutils \
     libpq-dev \
     build-essential \
-    python3.8-dev \
+    python3.9-dev \
     libxml2-dev \
     nano \
     firefox
 
 
 
-# Instalar pip para o Python 3.8
-RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3.8 get-pip.py
+# Instalar pip para o Python 3.9
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python3.9 get-pip.py
 
 # Instalar o Google Chrome (versão mais recente)
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -53,7 +53,7 @@ RUN ls -l /app/
 
 RUN pip install  -r /app/requirements.txt
 
-RUN pip install PySUS==0.6.0
+RUN pip install PySUS>=1.0
 
 
 # Definir um diretório de trabalho
