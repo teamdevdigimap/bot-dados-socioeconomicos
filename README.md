@@ -6,6 +6,15 @@ O **SocioDataBot** da Vale tem como objetivo automatizar a coleta e atualizaçã
 
 O principal objetivo do projeto é garantir que o banco de dados socioeconômico da Vale seja constantemente atualizado com dados confiáveis e relevantes.
 
+## Executar
+
+Com o docker desktop no seu windows, execute os seguintes comandos em um terminal do diretório do projeto
+
+- docker build -t data-bot .
+- docker run -it databot
+
+Após isso você terá um terminal para interagir com a aplicação conteinerizada 
+
 ## Tecnologias Utilizadas
 
 O robô faz uso das seguintes bibliotecas para executar suas funções de forma automatizada:
