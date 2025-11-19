@@ -38,6 +38,7 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libpq-dev \
     nano
+    
 
 
 # Configurar e Instalar Firefox (Versão .DEB - Não Snap)
@@ -79,7 +80,6 @@ WORKDIR /app
 
 # Copiar o código Python para o container
 COPY . /app
-
 
 ENV PATH="/usr/local/bin:$PATH"
 ENV FIREFOX_BIN=/usr/bin/firefox

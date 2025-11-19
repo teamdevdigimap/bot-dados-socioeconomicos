@@ -11,7 +11,11 @@ O principal objetivo do projeto é garantir que o banco de dados socioeconômico
 Com o docker desktop no seu windows, execute os seguintes comandos em um terminal do diretório do projeto
 
 - docker build -t data-bot .
-- docker run -it databot
+- docker run -it data-bot
+
+Alternativamente, se quiser um live-reload do seu código local para o container, substitua o último comando pelo seguinte
+
+- docker run -v "$(pwd):/app" -it data-bot
 
 Após isso você terá um terminal para interagir com a aplicação conteinerizada 
 

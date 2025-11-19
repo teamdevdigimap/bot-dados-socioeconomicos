@@ -18,10 +18,3 @@ saude_run()
 educacao_run()
 seguranca_run()
 territorio_run()
-
-
-   
-
-
-
-

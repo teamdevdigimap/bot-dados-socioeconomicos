@@ -45,7 +45,7 @@ def get_municipio_codmun6():
         
         # Consulta para obter as colunas
         query = f"""
-        select codmun, codmun6,nome_sigla from municipios_2022;
+        select codmun, codmun6, nome_sigla from municipios_2022;
         """
         
         # Executando a consulta
