@@ -8,13 +8,40 @@ from Demografia import demografia_run
 from Financas import financa_run
 from Educacao import educacao_run
 from Seguranca import seguranca_run
+import logging
 
-renda_run()
-habitacao_run()
-emprego_run()
-demografia_run()
-financa_run()
-saude_run()
-educacao_run()
-seguranca_run()
-territorio_run()
+
+def main():
+    logging.basicConfig(level=logging.INFO)
+
+    logging.info("Começa renda")
+    renda_run()
+    logging.info("Terminou renda")
+    logging.info("Começa habitação")
+    habitacao_run()
+    logging.info("Terminou habitação")
+    logging.info("Começa emprego")
+    emprego_run()
+    logging.info("Terminou emprego")
+    logging.info("Começa demografia")
+    demografia_run()
+    logging.info("Terminou demografia")
+    logging.info("Começa finanças")
+    financa_run()
+    logging.info("Terminou finanças")
+    logging.info("Começa saúde")
+    saude_run()
+    logging.info("Terminou saúde")
+    logging.info("Começa educação")
+    educacao_run()
+    logging.info("Terminou educação")
+    logging.info("Começa segurança")
+    seguranca_run()
+    logging.info("Terminou segurança")
+    logging.info("Começa território")
+    territorio_run()
+    logging.info("Terminou território")
+
+
+if __name__ == "__main__":
+    main()
