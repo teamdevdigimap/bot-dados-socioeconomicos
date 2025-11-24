@@ -712,3 +712,37 @@ def get_codmun():
         if conn:
             cur.close()
             conn.close()
+
+
+def update_chaves_municipios_cadunico(table_name):
+    """
+    Executa o UPDATE para preencher codmun7 e nome_sigla baseando-se
+    na tabela municipios_2022.
+    """
+    conn = None
+    try:
+        # Conecta usando os parâmetros já definidos no utils.py
+        conn = psycopg2.connect(**conn_params)
+        cur = conn.cursor()
+        
+        # Query solicitada (usando f-string para o nome da tabela ficar dinâmico)
+        query = f"""
+        UPDATE {table_name} AS b 
+        SET codmun7 = m.codmun, nome_sigla = m.nome_sigla 
+        FROM municipios_2022 AS m 
+        WHERE b.codmun::text = m.codmun6::text;
+        """
+        
+        cur.execute(query)
+        conn.commit() # É crucial fazer o commit para salvar a alteração
+        
+        # Opcional: verificar quantas linhas foram afetadas
+        print(f"Atualização de chaves (codmun7, nome_sigla) concluída em {table_name}. Linhas afetadas: {cur.rowcount}")
+        
+    except Exception as error:
+        print(f"Erro ao executar update de chaves em {table_name}: {error}")
+
+    finally:
+        if conn:
+            cur.close()
+            conn.close()
