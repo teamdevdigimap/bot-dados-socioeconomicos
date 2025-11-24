@@ -714,7 +714,7 @@ def get_codmun():
             conn.close()
 
 
-def update_chaves_municipios_cadunico(table_name):
+def update_chaves_municipios(table_name):
     """
     Executa o UPDATE para preencher codmun7 e nome_sigla baseando-se
     na tabela municipios_2022.

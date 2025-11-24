@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import datetime
 from io import StringIO
 from functools import reduce
-from utils.utils import add_values, get_ultimo_mes_ano, update_chaves_municipios_cadunico
+from utils.utils import add_values, get_ultimo_mes_ano, update_chaves_municipios
 
 table_name = 'table_cadunico'
 
@@ -162,7 +162,7 @@ def dataframe():
     
     # Executa a query de update APÓS todas as inserções
     # print("\nExecutando atualização de chaves e siglas...")
-    update_chaves_municipios_cadunico(table_name)
+    update_chaves_municipios(table_name)
 
 def run_table_cadunico():
     try:
