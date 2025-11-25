@@ -5,7 +5,10 @@ from datetime import datetime
 import numpy as np
 import traceback
 from utils.utils import get_municipio, add_values, get_ultimo_ano
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = 'table_distribuicao_dos_empregados_formais_por_escolaridade_sexo_e_faixa_etaria'
 
 
@@ -157,9 +160,9 @@ def dataframe(ano):
     """
 
 
-    df_escolaridade = bd.read_sql(query_escolaridade, billing_project_id='fair-kingdom-372516')
-    df_sexo = bd.read_sql(query_sexo, billing_project_id='fair-kingdom-372516')
-    df_idade = bd.read_sql(query_idade, billing_project_id='fair-kingdom-372516')
+    df_escolaridade = bd.read_sql(query_escolaridade, billing_project_id=os.environ['USER'])
+    df_sexo = bd.read_sql(query_sexo, billing_project_id=os.environ['USER'])
+    df_idade = bd.read_sql(query_idade, billing_project_id=os.environ['USER'])
 
     if df_escolaridade.shape[0] and df_sexo.shape[0] and df_idade.shape[0]:
 

@@ -3,9 +3,11 @@ import basedosdados as bd
 import numpy as np
 import pandas as pd
 from utils.utils import add_values, get_ultimo_ano, get_municipio
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = 'table_pib_municipal_e_desagregacoes'
-
 
 
 def dataframe(ano):
@@ -26,7 +28,7 @@ def dataframe(ano):
         WHERE ano = {ano}
     """
     
-    df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+    df = bd.read_sql(query, billing_project_id=os.environ['USER'])
     if df.shape[0]:
         # Renomear as colunas
         df.columns = [

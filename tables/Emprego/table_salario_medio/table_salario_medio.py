@@ -2,7 +2,10 @@ import pandas as pd
 import basedosdados as bd
 from datetime import datetime 
 from utils.utils import add_values, get_municipio, get_ultimo_ano
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = 'table_salario_medio'
 
 def dataframe(ano):
@@ -19,7 +22,7 @@ def dataframe(ano):
             id_municipio,ano           
         """
 
-    df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+    df = bd.read_sql(query, billing_project_id=os.environ['USER'])
     
     return df
 

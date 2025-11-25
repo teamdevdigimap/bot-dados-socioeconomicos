@@ -3,7 +3,10 @@ import pandas as pd
 from datetime import datetime
 import numpy as np
 from utils.utils import add_values, get_municipio, get_saude_prod_ambula_qtd_aprovada, get_ultimo_ano,update_table_saude_prod_ambula_qtd_aprovada
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = 'table_saude_prod_ambula_qtd_aprovada'
 
 
@@ -27,7 +30,7 @@ def dataframe(ano):
             --dados.mes
         """
 
-    df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+    df = bd.read_sql(query, billing_project_id=os.environ['USER'])
     df = df[['codmun', 'quantidade_aprovada_total', 'ano','mes']]
     df.columns = ['codmun', 'quantidadeaprovadatotal', 'ano','mes']
     

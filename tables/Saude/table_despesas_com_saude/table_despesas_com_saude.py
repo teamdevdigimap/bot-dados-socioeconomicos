@@ -3,7 +3,10 @@ from datetime import datetime
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 from utils.utils import add_values, get_ultimo_mes_ano, get_municipio
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = 'table_despesas_com_saude'
 
 def dataframe(ano,mes):
@@ -19,7 +22,7 @@ def dataframe(ano,mes):
     GROUP BY ano,mes, dados.id_municipio_estabelecimento_aih
 
             """
-    df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+    df = bd.read_sql(query, billing_project_id=os.environ['USER'])
 
     return df
 

@@ -2,7 +2,10 @@ import basedosdados as bd
 import pandas as pd
 from datetime import datetime
 from utils.utils import get_municipio, add_values, get_ultimo_ano
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = "table_percentual_da_area_total_do_municipio"
 
 def dataframe(ano):
@@ -19,7 +22,7 @@ def dataframe(ano):
     """
 
 
-    df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+    df = bd.read_sql(query, billing_project_id=os.environ['USER'])
     
     mapeamento_classe = {
         12: "Formação Campestre",

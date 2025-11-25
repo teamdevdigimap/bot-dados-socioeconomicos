@@ -3,7 +3,10 @@ from datetime import datetime
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 from utils.utils import get_municipio, add_values, get_ultimo_mes_ano
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = 'table_num_admitidos_desligados'
 
 def dataframe():
@@ -41,7 +44,7 @@ def dataframe():
         ORDER BY dados.id_municipio   
         """
 
-        df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+        df = bd.read_sql(query, billing_project_id=os.environ['USER'])
 
         if df.shape[0]:
             df = pd.merge(df, mun, how='left', on='codmun')

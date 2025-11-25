@@ -5,8 +5,10 @@ import basedosdados as bd
 import pandas as pd
 from datetime import datetime
 from utils.utils import add_values, get_ultimo_ano, get_municipio
+import os
+from dotenv import load_dotenv
 
-
+load_dotenv()
 table_name = 'table_populacao_residente_por_sexo_e_idade'
 
 def dataframe():
@@ -28,7 +30,7 @@ def dataframe():
                 ano = {ano}
             """
 
-            df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+            df = bd.read_sql(query, billing_project_id=os.environ['USER'])
 
             if df.shape[0]:  
                 faixa_etaria = {

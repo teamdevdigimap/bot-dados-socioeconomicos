@@ -3,7 +3,10 @@ from datetime import datetime
 import pandas as pd
 import psycopg2
 from utils.utils import add_values, get_ultimo_ano, get_municipio
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = 'table_nota_saeb_anos_iniciais_fundamental'
 
 ultimo_ano = get_ultimo_ano(table_name) + 1
@@ -28,7 +31,7 @@ def dataframe():
         WHERE ano = {ano}  and ensino = 'fundamental'  and anos_escolares = 'iniciais (1-5)'
         """
 
-        df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+        df = bd.read_sql(query, billing_project_id=os.environ['USER'])
 
         rename = {
             'id_municipio': 'codmun',

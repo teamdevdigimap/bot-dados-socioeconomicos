@@ -4,7 +4,10 @@ from dateutil.relativedelta import relativedelta
 import pandas as pd
 import numpy as np
 from utils.utils import add_values, get_ultimo_mes_ano, get_municipio
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = "table_num_estabelecimento_setor_tamanho"
 
 
@@ -65,7 +68,7 @@ def dataframe(ano,mes):
         dados.id_municipio,
         grupo    
         """
-    df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+    df = bd.read_sql(query, billing_project_id=os.environ['USER'])
     if df.shape[0]:
         df['tamanho_estabelecimento_janeiro'] = df['tamanho_estabelecimento_janeiro'].astype(int)
 

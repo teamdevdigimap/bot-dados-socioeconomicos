@@ -2,7 +2,10 @@ import basedosdados as bd
 from datetime import datetime
 import pandas as pd
 from utils.utils import add_values, get_ultimo_ano, get_municipio
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = 'table_estabelecimentos_educacao_basica'
 
 ultimo_ano = get_ultimo_ano(table_name) + 1
@@ -36,7 +39,7 @@ def dataframe():
             dados.id_municipio         
         """
 
-        df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+        df = bd.read_sql(query, billing_project_id=os.environ['USER'])
     
         df.fillna(0, inplace=True)
         if df.shape[0]:

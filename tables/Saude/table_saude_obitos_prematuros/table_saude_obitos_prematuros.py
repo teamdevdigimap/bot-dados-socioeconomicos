@@ -3,7 +3,10 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 from utils.utils import get_municipio, add_values, get_ultimo_ano
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = 'table_saude_obitos_prematuros'
 
 
@@ -65,8 +68,8 @@ def dataframe(ano):
 
 
 
-    df_de_prematuros = bd.read_sql(query_de_prematuros, billing_project_id='fair-kingdom-372516')
-    df_de_30_69 = bd.read_sql(query_de_30_69, billing_project_id='fair-kingdom-372516')
+    df_de_prematuros = bd.read_sql(query_de_prematuros, billing_project_id=os.environ['USER'])
+    df_de_30_69 = bd.read_sql(query_de_30_69, billing_project_id=os.environ['USER'])
 
     df = pd.merge(df_de_30_69, df_de_prematuros, how = 'left', on=['codmun', 'ano'])
     if df.shape[0]:

@@ -1,8 +1,10 @@
 import basedosdados as bd
 from datetime import datetime
 from utils.utils import add_values, get_ultimo_ano, get_municipio
+import os
+from dotenv import load_dotenv
 
-
+load_dotenv()
 table_name = 'table_despesas_funcao'
 
 
@@ -30,7 +32,7 @@ def dataframe():
                 
             """
 
-            df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+            df = bd.read_sql(query, billing_project_id=os.environ['USER'])
             
             df.columns = ['codmun', 'estagio','funcao', 'valor','ano']
             df_municipios = get_municipio()

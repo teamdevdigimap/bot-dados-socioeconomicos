@@ -3,8 +3,10 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import pandas as pd
 from utils.utils import get_municipio, get_ultimo_mes_ano, add_values
+import os
+from dotenv import load_dotenv
 
-
+load_dotenv()
 table_name = 'table_percentual_imoveis_rurais'
 
 
@@ -46,7 +48,7 @@ def dataframe(ano, mes):
 
     """
 
-    df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+    df = bd.read_sql(query, billing_project_id=os.environ['USER'])
 
     df['area_total'] = df['area_total'] / 1e3
 

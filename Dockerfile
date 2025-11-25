@@ -81,6 +81,7 @@ WORKDIR /app
 # Copiar o código Python para o container
 COPY . /app
 
+ENV GOOGLE_APPLICATION_CREDENTIALS="/app/credentials.json"
 ENV PATH="/usr/local/bin:$PATH"
 ENV FIREFOX_BIN=/usr/bin/firefox
 ENV CHROME_BIN=/usr/bin/google-chrome-stable

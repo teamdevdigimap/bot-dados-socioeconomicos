@@ -3,7 +3,10 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 from utils.utils import add_values, get_ultimo_ano, get_municipio
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = "table_pib_per_capita_municipal"
 
 
@@ -39,7 +42,7 @@ def dataframe(ano):
       AND p.ano = pop.ano;
   """
 
-  df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+  df = bd.read_sql(query, billing_project_id=os.environ['USER'])
   if df.shape[0]:  
     return df
 

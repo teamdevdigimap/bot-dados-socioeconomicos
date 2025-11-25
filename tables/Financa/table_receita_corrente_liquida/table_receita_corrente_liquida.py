@@ -2,6 +2,10 @@ from datetime import datetime
 import basedosdados as bd
 from utils.utils import add_values, get_ultimo_ano, get_municipio
 import pandas as pd
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 table_name = 'table_receita_corrente_liquida'
 
 mun = get_municipio()
@@ -24,7 +28,7 @@ def dataframe():
             GROUP BY  id_municipio, ano
             """
 
-            df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+            df = bd.read_sql(query, billing_project_id=os.environ['USER'])
             #df.columns = ['ano', 'codmun', 'conta', 'valor']
             #df.columns = ['ano', 'codmun','valor']
             if df.shape[0]:

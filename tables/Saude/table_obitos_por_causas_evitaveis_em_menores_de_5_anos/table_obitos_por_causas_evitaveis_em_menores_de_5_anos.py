@@ -3,7 +3,10 @@ from datetime import datetime
 import pandas as pd
 from utils.utils import add_values, get_municipio, get_ultimo_ano
 import numpy as np
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = 'table_obitos_por_causas_evitaveis_em_menores_de_5_anos'
 
 def dataframe(ano):
@@ -45,7 +48,7 @@ def dataframe(ano):
         where ano = {ano} and idade <= 5
     """
     
-    df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+    df = bd.read_sql(query, billing_project_id=os.environ['USER'])
 
     #causas evitaveis:
     reduzivel_pelas_acoes_de_imunizacao = ['A17', 'A19', 'A33', 'A35', 'A36', 'A37', 'A80', 'B05', 'B06', 'B16', 'B26', 'G000', 'P350', 'P353']

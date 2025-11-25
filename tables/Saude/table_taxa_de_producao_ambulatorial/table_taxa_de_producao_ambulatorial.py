@@ -2,8 +2,10 @@ import basedosdados as bd
 from datetime import datetime
 import pandas as pd
 from utils.utils import get_municipio, get_ultimo_ano, add_values
+import os
+from dotenv import load_dotenv
 
-
+load_dotenv()
 table_name = 'table_taxa_de_producao_ambulatorial'
 
 def dataframe(ano):
@@ -31,7 +33,7 @@ def dataframe(ano):
         GROUP BY ano, codmun) AS a
     ON p.codmun = a.codmun
     """
-    df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+    df = bd.read_sql(query, billing_project_id=os.environ['USER'])
     return df
 
 def run_table_taxa_de_producao_ambulatorial():

@@ -3,7 +3,10 @@ from datetime import datetime
 import pandas as pd
 import psycopg2
 from utils.utils import add_values, get_ultimo_ano, get_municipio
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = 'table_percentual_de_docentes_em_exercicio_i'
 
 ultimo_ano = get_ultimo_ano(table_name) + 1
@@ -29,7 +32,7 @@ def dataframe():
         """
 
 
-        df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+        df = bd.read_sql(query, billing_project_id=os.environ['USER'])
 
         mun = get_municipio()
 

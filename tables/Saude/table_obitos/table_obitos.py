@@ -3,7 +3,10 @@ from datetime import datetime
 import pandas as pd
 import numpy as np
 from utils.utils import get_municipio, get_ultimo_ano, add_values
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 table_name = 'table_obitos'
 
 def dataframe(ano):
@@ -23,7 +26,7 @@ def dataframe(ano):
         dados.id_municipio,
         diretorio_causa_basica.descricao_capitulo
     """
-    df = bd.read_sql(query = query, billing_project_id = 'fair-kingdom-372516')
+    df = bd.read_sql(query = query, billing_project_id = os.environ['USER'])
     df = df.fillna(0)
 
     if df.shape[0]:    

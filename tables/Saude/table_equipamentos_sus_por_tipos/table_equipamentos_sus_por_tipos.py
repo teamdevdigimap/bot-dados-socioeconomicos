@@ -3,8 +3,10 @@ from datetime import datetime
 import pandas as pd
 import numpy as np
 from utils.utils import get_municipio, get_ultimo_ano, add_values, get_ultimo_mes_ano, get_equipamentos_sus_por_tipos, update_table_equipamentos_sus_por_tipos
+import os
+from dotenv import load_dotenv
 
-
+load_dotenv()
 table_name = 'table_equipamentos_sus_por_tipos'
 
 def get_novo_atualizado(df,ano):
@@ -50,7 +52,7 @@ def dataframe(ano):
         codmun, ano, descricao_tipo_equipamento      
     """
 
-    df = bd.read_sql(query, billing_project_id='fair-kingdom-372516')
+    df = bd.read_sql(query, billing_project_id=os.environ['USER'])
 
     if df.shape[0]:
         #df = pd.merge(df, mun, on='codmun', how='left')
