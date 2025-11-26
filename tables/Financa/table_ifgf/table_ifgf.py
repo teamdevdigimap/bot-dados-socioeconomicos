@@ -30,11 +30,10 @@ def insert_manual_ifgf_from_csv(file_path, sep=';'):
         sep (str): Separador do CSV. Padrão é ';' (comum no Brasil quando decimais usam vírgula).
                    Se o seu arquivo usar tabulação, mude para sep='\t'.
     """
-    print(f"\n--- Processando arquivo manual: {file_path} ---")
+    print(f"\n---> Processando arquivo manual: {file_path} ---")
 
     try:
         # 1. Leitura do arquivo
-        # dtype=str é crucial para manter os zeros à esquerda do código IBGE (ex: 110001)
         df = pd.read_csv(file_path, sep=sep, dtype=str)
         
         # Validação básica de colunas
@@ -42,7 +41,6 @@ def insert_manual_ifgf_from_csv(file_path, sep=';'):
             raise Exception("O CSV deve conter a coluna 'Código' (IBGE 6 dígitos).")
 
         # 2. Identificar colunas de Ano (melt/unpivot)
-        # Assumimos que as colunas fixas são Código, UF e Município. O resto são anos.
         cols_fixas = ['Código', 'UF', 'Município']
         cols_anos = [c for c in df.columns if c not in cols_fixas]
         
@@ -63,7 +61,6 @@ def insert_manual_ifgf_from_csv(file_path, sep=';'):
         df_melted['ano'] = df_melted['ano'].astype(int)
 
         # 4. Cruzamento com Tabela de Municípios (Utils)
-        # Precisamos converter o código de 6 dígitos (CSV) para 7 dígitos (Banco)
         df_mun_full = get_municipio_codmun6()
         
         # Garantir tipagem para o merge
