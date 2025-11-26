@@ -13,8 +13,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import psycopg2
 from utils.utils import add_values, get_ultimo_ano, get_municipio
+import logging
 
 table_name = "table_tx_mort_violentas_causas_indeterminadas"
+logging.basicConfig(level=logging.INFO)
 
 def download_data(download_path):
     """ Função para baixar os dados do site do Atlas da Violência """
@@ -76,6 +78,8 @@ def download_data(download_path):
 def process_dataframe(download_path):
     """ Função para processar o CSV baixado """
     csv_path = os.path.join(download_path, "taxa-mortes-violentas-por-causa-indeterminada.csv")
+    logging.info(f"Lendo arquivo CSV em: {csv_path}")
+    logging.info(f"O caminho do download é: {download_path}")
 
     if not os.path.exists(csv_path):
         raise Exception("Arquivo CSV não encontrado após download.")
