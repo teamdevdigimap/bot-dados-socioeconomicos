@@ -14,6 +14,75 @@ from utils.utils import add_values, get_ultimo_ano, get_municipio
 
 table_name = "table_tx_suicidio"
 
+df_municipios = None
+
+def insert_manual_tx_suicidio_from_csv(file_path, sep=';'):
+    """
+    Lê um arquivo CSV contendo dados de Taxa de Suicídio e insere no banco.
+    Estrutura esperada do CSV: codmun, ano, txasuicidio
+    
+    Args:
+        file_path (str): Caminho completo para o arquivo .csv
+        sep (str): Separador do CSV. 
+                   Use ';' para CSVs padrão excel brasileiro.
+                   Use '\t' se os dados estiverem separados por tabulação (como no exemplo copiado).
+    """
+    print(f"\n---> Processando arquivo manual: {file_path} ---")
+
+    try:
+        # 1. Leitura do arquivo
+        df = pd.read_csv(file_path, sep=sep, dtype={'codmun': str})
+        
+        # Normalização dos nomes das colunas (remove espaços e coloca em minúsculo)
+        df.columns = df.columns.str.strip().str.lower()
+        
+        colunas_esperadas = ['codmun', 'ano', 'txasuicidio']
+        
+        # Validação básica
+        if not all(col in df.columns for col in colunas_esperadas):
+             print(f"Colunas encontradas: {df.columns.tolist()}")
+             raise Exception(f"O CSV deve conter as colunas: {colunas_esperadas}")
+
+        # 2. Tratamento de dados
+        df['txasuicidio'] = df['txasuicidio'].astype(str).str.replace(',', '.', regex=False)
+        df['txasuicidio'] = pd.to_numeric(df['txasuicidio'], errors='coerce')
+        
+        df['ano'] = pd.to_numeric(df['ano'], errors='coerce').astype('Int64') # Int64 permite nulos se necessário
+
+        # Remove linhas onde codmun ou ano sejam nulos (são chaves essenciais)
+        df = df.dropna(subset=['codmun', 'ano'])
+
+        # 3. Cruzamento com Tabela de Municípios (Utils) para pegar nome_sigla
+        global df_municipios
+        if df_municipios is None or df_municipios.empty:
+            df_municipios = get_municipio()
+            # Garante que codmun no df de municipios seja string para o merge
+            if 'codmun' in df_municipios.columns:
+                df_municipios['codmun'] = df_municipios['codmun'].astype(str)
+
+        # Merge para pegar o nome_sigla
+        df_final = df.merge(
+            df_municipios[['codmun', 'nome_sigla']], 
+            on='codmun', 
+            how='left'
+        )
+
+        # 4. Preparação final
+        df_insert = df_final[['codmun', 'ano', 'txasuicidio', 'nome_sigla']].copy()
+
+        # 5. Inserção
+        if not df_insert.empty:
+            print(f"Inserindo {len(df_insert)} registros manuais na tabela {table_name}...")
+            # print(df_insert.head())
+            add_values(df_insert, table_name)
+        else:
+            print("Nenhum dado válido para inserir.")
+
+    except FileNotFoundError:
+        print(f"Erro: O arquivo '{file_path}' não foi encontrado.")
+    except Exception as e:
+        print(f"Erro crítico ao processar o arquivo manual: {e}")
+
 def download_data(download_path):
     """ Função para baixar os dados de Taxa de Suicídio do site do Atlas da Violência """
     options = webdriver.ChromeOptions()
@@ -139,6 +208,23 @@ def dataframe():
 def run_table_taxa_suicidio():
     """ Função para executar o fluxo de atualização da tabela """
     try:
-        dataframe()
+        dataframe() #comente esta linha se for inserir dados manualmente
+        
+        # para atualização via arquivo manual
+        # Exemplo: caminho_csv = "C:/Users/matheus.souza/Downloads/suicidios.csv"
+        caminho_csv = "C:/Users/matheus.souza/Downloads/suicidios.csv"
+        
+        if caminho_csv is not None:
+            try:
+                if os.path.exists(caminho_csv):
+                    # Ajuste o sep conforme seu arquivo (ex: ',' para CSV padrão, '\t' para tabulação)
+                    insert_manual_tx_suicidio_from_csv(caminho_csv, sep=';')
+                else:
+                    print(f"Arquivo CSV manual não encontrado em: {caminho_csv}.")
+            except Exception as e:
+                print(f"Erro ao inserir dados manuais do CSV: {e}")
+        elif caminho_csv is None:
+            print("Nenhum arquivo CSV manual fornecido para inserção.")
+            
     except Exception as e:
         raise Exception(f"Erro ao atualizar tabela {table_name}: {e}")
