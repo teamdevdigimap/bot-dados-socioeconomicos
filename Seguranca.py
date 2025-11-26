@@ -9,42 +9,42 @@ from tables.Seguranca.table_censo_suas import table_censo_suas
 ##### SEGURANÇA #####
 rastreabilidade_name = 'rastreabilidade_seguranca_publica_teste'
 def seguranca_run():
-    # try:
-    #     table_homicidios.run_table_homicidios()
+    try:
+        table_homicidios.run_table_homicidios()
 
-    #     #update_data_ultima_coleta(rastreabilidade_name,
-    #                             #   table_name='table_homicidios')
-    #     pass                                
-    # except Exception as e:
-    #     print(f"Erro na tabela table_homicidios \n{e}")  
+        #update_data_ultima_coleta(rastreabilidade_name,
+                                #   table_name='table_homicidios')
+        pass                                
+    except Exception as e:
+        print(f"Erro na tabela table_homicidios \n{e}")  
 
 
-    # try:
-    #     table_tx_homicidios.run_table_taxa_homicidios()
+    try:
+        table_tx_homicidios.run_table_taxa_homicidios()
 
-    #     # update_data_ultima_coleta(rastreabilidade_name,
-    #     #                           table_name='table_tx_homicidios')
-    #     pass
-    # except Exception as e:
-    #     print(f"Erro na tabela table_taxa_homicidios \n{e}")  
+        # update_data_ultima_coleta(rastreabilidade_name,
+        #                           table_name='table_tx_homicidios')
+        pass
+    except Exception as e:
+        print(f"Erro na tabela table_taxa_homicidios \n{e}")  
 
-    # try:
-    #     table_tx_mort_violentas_causas_indeterminadas.run_table_taxa_mortes_violentas()
+    try:
+        table_tx_mort_violentas_causas_indeterminadas.run_table_taxa_mortes_violentas()
 
-    #     # update_data_ultima_coleta(rastreabilidade_name,
-    #     #                           table_name='table_tx_mort_violentas_causas_indeterminadas')
-    #     pass
-    # except Exception as e:
-    #     print(f"Erro na tabela table_tx_mort_violentas_causas_indeterminadas \n{e}")
+        # update_data_ultima_coleta(rastreabilidade_name,
+        #                           table_name='table_tx_mort_violentas_causas_indeterminadas')
+        pass
+    except Exception as e:
+        print(f"Erro na tabela table_tx_mort_violentas_causas_indeterminadas \n{e}")
 
-    # try:
-    #     table_tx_obito_acidentes_transito.run_table_taxa_obitos_acidentes()
+    try:
+        table_tx_obito_acidentes_transito.run_table_taxa_obitos_acidentes()
 
-    #     # update_data_ultima_coleta(rastreabilidade_name,
-    #     #                           table_name='table_tx_obito_acidentes_transito')
-    #     pass
-    # except Exception as e:
-    #     print(f"Erro na tabela table_tx_obito_acidentes_transito \n{e}")
+        # update_data_ultima_coleta(rastreabilidade_name,
+        #                           table_name='table_tx_obito_acidentes_transito')
+        pass
+    except Exception as e:
+        print(f"Erro na tabela table_tx_obito_acidentes_transito \n{e}")
 
     try:
         table_tx_suicidio.run_table_taxa_suicidio()
@@ -55,11 +55,11 @@ def seguranca_run():
     except Exception as e:
         print(f"Erro na tabela table_tx_suicidio \n{e}")
 
-    # try:
-    #     ## SITE INSTAVEL VERIFICAR ANTES DE RODAR O CÓDIGO
-    #     pass
-    #     table_censo_suas.run_table_censo_suas()
+    try:
+        ## SITE INSTAVEL VERIFICAR ANTES DE RODAR O CÓDIGO
+        pass
+        table_censo_suas.run_table_censo_suas()
 
-    #     #update_data_ultima_coleta(rastreabilidade_name, table_name='table_censo_suas')
-    # except Exception as e:
-    #     print(f"Erro na tabela table_censo_suas \n{e}")
+        #update_data_ultima_coleta(rastreabilidade_name, table_name='table_censo_suas')
+    except Exception as e:
+        print(f"Erro na tabela table_censo_suas \n{e}")

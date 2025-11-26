@@ -6,9 +6,8 @@ table_name = 'table_censo_suas'
 
 # Dicionário para mapear os meses para seus períodos
 mes_periodo = {
-    1: 'primeiro',  2: 'primeiro',  3: 'primeiro',  4: 'primeiro',
-    5: 'primeiro',  6: 'primeiro',  7: 'segundo',   8: 'segundo',
-    9: 'segundo',  10: 'segundo',  11: 'segundo',  12: 'segundo',
+    1: 'primeiro',  2: 'primeiro',  3: 'primeiro',  4: 'primeiro', 5: 'primeiro',  6: 'primeiro',  
+    7: 'segundo',   8: 'segundo',  9: 'segundo',  10: 'segundo',  11: 'segundo',  12: 'segundo'
 }
 
 def dataframe():
@@ -85,10 +84,10 @@ def run_table_censo_suas():
             df = pd.merge(df,mun,how='left', on='codmun')
             print(df)
             
-            #add_values(df, table_name)
-            #print("Dados atualizados com sucesso!")
-        # else:
-        #     print("Nenhum novo dado para inserir.")
+            add_values(df, table_name)
+            print("Dados atualizados com sucesso!")
+        else:
+            print("Nenhum novo dado para inserir.")
 
     except Exception as e:
         print(f"Erro ao atualizar tabela {table_name}. Detalhes: {e}")
