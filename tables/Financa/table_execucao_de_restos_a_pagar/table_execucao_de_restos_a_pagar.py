@@ -28,12 +28,14 @@ def dataframe():
                 if 'items' in data and data['items']:
                     valor = get_valor_a_pagar(data)
                     dados.append({'codmun': codmun, 'restosapagar': valor, 'ano': ano})
+                    # print('Adicionado:', {'codmun': codmun, 'restosapagar': valor, 'ano': ano})
                 # else:
                 #     print(f"Sem dados para {codmun} no ano {ano}")
             else:
                 print(f"Erro ao acessar {url}: {response.status_code}")
 
     df = pd.DataFrame(dados)
+    # print("DataFrame construído:\n", df.head(10))  
     if not df.empty:
         df = pd.merge(df, mun, how='left')
 
