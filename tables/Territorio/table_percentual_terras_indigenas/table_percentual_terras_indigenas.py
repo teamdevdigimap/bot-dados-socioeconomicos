@@ -38,36 +38,36 @@ def download_tis_shp():
         print(f'Erro download TI: {e}')
         return False
 
-def download_municipios_shp():
-    """Função Nova: Baixa a malha de municípios do IBGE"""
-    try:
-        # URL oficial do IBGE para malha 2022
-        url = "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2022/Brasil/BR/BR_Municipios_2022.zip"
+# def download_municipios_shp():
+#     """Baixa a malha de municípios do IBGE"""
+#     try:
+#         # URL oficial do IBGE para malha 2022
+#         url = "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2022/Brasil/BR/BR_Municipios_2022.zip"
         
-        if not os.path.exists(local_download_mun):
-            os.makedirs(local_download_mun)
+#         if not os.path.exists(local_download_mun):
+#             os.makedirs(local_download_mun)
 
-        caminho_arquivo_shp = os.path.join(local_download_mun, "BR_Municipios_2022.shp")
+#         caminho_arquivo_shp = os.path.join(local_download_mun, "BR_Municipios_2022.shp")
         
-        # Só baixa se o arquivo .shp final não existir
-        if not os.path.exists(caminho_arquivo_shp):
-            print("Baixando Municípios IBGE...")
-            response = requests.get(url)
-            if response.status_code == 200:
-                arquivo_zip = os.path.join(local_download_mun, "BR_Municipios_2022.zip")
-                with open(arquivo_zip, "wb") as f:
-                    f.write(response.content)
+#         # Só baixa se o arquivo .shp final não existir
+#         if not os.path.exists(caminho_arquivo_shp):
+#             print("Baixando Municípios IBGE...")
+#             response = requests.get(url)
+#             if response.status_code == 200:
+#                 arquivo_zip = os.path.join(local_download_mun, "BR_Municipios_2022.zip")
+#                 with open(arquivo_zip, "wb") as f:
+#                     f.write(response.content)
                 
-                with zipfile.ZipFile(arquivo_zip, 'r') as zip_ref:
-                    zip_ref.extractall(local_download_mun)
-                print("Download Municípios concluído!")
-            else:
-                print(f"Falha download Municípios: {response.status_code}")
-                return False
-        return True
-    except Exception as e:
-        print(f'Erro download Municípios: {e}')
-        return False
+#                 with zipfile.ZipFile(arquivo_zip, 'r') as zip_ref:
+#                     zip_ref.extractall(local_download_mun)
+#                 print("Download Municípios concluído!")
+#             else:
+#                 print(f"Falha download Municípios: {response.status_code}")
+#                 return False
+#         return True
+#     except Exception as e:
+#         print(f'Erro download Municípios: {e}')
+#         return False
 
 def dataframe():
     # Caminhos definidos no topo
@@ -131,9 +131,9 @@ def run_table_percentual_terras_indigenas():
     try:
         # Executa downloads e verifica sucesso
         ok_tis = download_tis_shp()
-        ok_mun = download_municipios_shp()
+        #ok_mun = download_municipios_shp()
 
-        if ok_tis and ok_mun:
+        if ok_tis: # and ok_mun:
             df = dataframe()
             mun = get_municipio()
             

@@ -11,85 +11,108 @@ from glob import glob
 import geopandas as gpd
 import pandas as pd
 from utils.utils import get_municipio, get_table_percentual_areas_protegidas, update_table_percentual_areas_protegidas, add_values
+import logging
 
+logging.basicConfig(level=logging.WARNING)
 table_name = 'table_percentual_areas_protegidas'
 
 local_download = 'tables/Territorio/AreasProtegidas'
 
 def download_shape():
-    # Caminho para o diretório de download desejado
-    download_dir = local_download
+    # Caminho absoluto para o diretório de download (Evita erros de caminho no Windows)
+    download_dir = os.path.abspath(local_download)
 
-    # Verificar se o diretório existe, se não, cria-lo
+    # Limpeza do diretório
     if os.path.exists(download_dir):
         shutil.rmtree(download_dir)
-    
-    if not os.path.exists(download_dir):
-        os.makedirs(download_dir)
+    os.makedirs(download_dir, exist_ok=True)
 
-    # Configurar o Selenium para usar o Chrome
+    # Configurar o Selenium
     options = webdriver.ChromeOptions()
-
-    options.add_argument("--headless")
+    options.add_argument("--headless=new") # Sintaxe mais recente para headless
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-gpu")
+    options.add_argument("--window-size=1920,1080") # Importante para garantir que o botão seja clicável
+    options.add_argument("--disable-dev-shm-usage")
 
-
-    download_dir = f'{os.getcwd()}/{download_dir}'
-
-    # Alterar o diretório de download
+    # Configurações de preferência para permitir download em Headless
     prefs = {
-        "download.default_directory": download_dir,  # Definir o diretório de download
-        "download.prompt_for_download": False,        # Desabilitar o prompt de download
-        "directory_upgrade": True                     # Forçar o Chrome a usar o diretório de download especificado
+        "download.default_directory": download_dir,
+        "download.prompt_for_download": False,
+        "download.directory_upgrade": True,
+        "safebrowsing.enabled": True,
+        "profile.default_content_setting_values.automatic_downloads": 1
     }
     options.add_experimental_option("prefs", prefs)
 
     driver = webdriver.Chrome(options=options)
 
-    
-
-    # Acessar a página
-    driver.get("https://cnuc.mma.gov.br/map")
-
-    # Esperar a página carregar
-    time.sleep(5)
-
-    # Encontrar o botão de download e clicar
     try:
-        # Clicar no botão de download inicial
+        logging.info("Acessando site...")
+        driver.get("https://cnuc.mma.gov.br/map")
+        time.sleep(8) # Aumentei um pouco pois o site do MMA é lento
+
+        # 1. Clicar no botão inicial
+        logging.info("Tentando clicar no primeiro botão de download...")
         download_button = driver.find_element(By.XPATH, "//button[@type='button' and contains(text(),'Download do geo da UC:')]")
-        download_button.click()
+        driver.execute_script("arguments[0].click();", download_button) # Usa JS para forçar o clique se houver sobreposição
         
-        # Esperar a página carregar e a seleção de formato aparecer
-        time.sleep(2)
+        time.sleep(3)
         
-        # Selecionar o input de formato 'shp'
+        # 2. Selecionar SHP
+        logging.info("Selecionando formato SHP...")
         shp_radio_button = driver.find_element(By.XPATH, "//input[@class='jss4' and @value='shp']")
-        shp_radio_button.click()
+        driver.execute_script("arguments[0].click();", shp_radio_button)
 
-        # Esperar um pouco para garantir que a opção foi selecionada
-        time.sleep(2)
+        time.sleep(3)
         
-        # Clicar no botão de download (agora habilitado)
+        # 3. Download Final
+        logging.info("Clicando no botão final de download...")
         download_button_final = driver.find_element(By.XPATH, "//button[@type='button' and contains(text(),'Download') and contains(@class, 'btn-success')]")
-        download_button_final.click()
+        driver.execute_script("arguments[0].click();", download_button_final)
 
-        # Aguardar o tempo necessário para o download ser concluído
-        time.sleep(75)
+        # Monitoramento do Download
+        timeout = 180 # Aumentado para 3 minutos
+        start_time = time.time()
+        download_finalizado = False
+        
+        logging.info("Aguardando arquivo .zip...")
+        while time.time() - start_time < timeout:
+            arquivos = os.listdir(download_dir)
+            # Verifica se existe .zip e se NÃO existe .crdownload (temp do Chrome)
+            if any(f.endswith('.zip') for f in arquivos) and not any(f.endswith('.crdownload') for f in arquivos):
+                download_finalizado = True
+                break
+            time.sleep(1)
+
+        if not download_finalizado:
+            # Lista o diretório para debug
+            print(f"Conteúdo do diretório após timeout: {os.listdir(download_dir)}")
+            raise Exception("Tempo limite de download excedido.")
 
     except Exception as e:
-        print(f"Erro ao encontrar o botão de download ou selecionar o formato: {e}")
+        driver.quit()
+        raise Exception(f"Falha no processo do Selenium: {e}")
 
-    # Fechar o navegador
     driver.quit()
     
-    arquivo_zip = os.listdir(download_dir)
-    arquivo_zip = [i for i in arquivo_zip if ".zip" in i][0]
+    # Processamento do arquivo
+    arquivos_no_dir = os.listdir(download_dir)
+    lista_zips = [i for i in arquivos_no_dir if ".zip" in i]
     
-    with zipfile.ZipFile(f'{download_dir}/{arquivo_zip}', 'r') as zip_ref:
+    if not lista_zips:
+        raise Exception(f"Erro: Download parece ter concluído, mas nenhum .zip encontrado em {download_dir}.")
+    
+    # CORREÇÃO PRINCIPAL AQUI: Usar lista_zips, não a lista geral
+    nome_arquivo_zip = lista_zips[0]
+    caminho_completo_zip = os.path.join(download_dir, nome_arquivo_zip)
+    
+    logging.info(f"Descompactando {nome_arquivo_zip}...")
+    with zipfile.ZipFile(caminho_completo_zip, 'r') as zip_ref:
         zip_ref.extractall(download_dir)
-    print(f"Arquivos descompactados em: {download_dir}")
+    
+    print(f"Arquivos descompactados com sucesso em: {download_dir}")
+    
     
 def get_shp_uc():
     download_dir = f"{local_download}/*.shp"
