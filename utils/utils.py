@@ -730,7 +730,7 @@ def update_chaves_municipios(table_name):
         UPDATE {table_name} AS b 
         SET codmun7 = m.codmun, nome_sigla = m.nome_sigla 
         FROM municipios_2022 AS m 
-        WHERE b.codmun::text = m.codmun6::text;
+        WHERE b.codmun::text = m.codmun6::text AND (b.codmun7 IS NULL OR b.codmun7 = '' OR b.nome_sigla IS NULL OR b.nome_sigla = '');
         """
         
         cur.execute(query)
