@@ -10,6 +10,8 @@ load_dotenv()
 TABLE_NAME = 'table_renda_per_capta'
 BILLING_PROJECT_ID = os.environ['USER']
 
+
+# RENDA PER CAPTA É DIFERENTE DE PIB PER CAPTA! CORRIGIR QUANDO HOUVER DADOS DISPONÍVEIS.
 def download_and_transform(ano_inicio):
     """
     Busca o PIB per capita municipal no Base dos Dados para preencher a lacuna anual.
@@ -19,9 +21,9 @@ def download_and_transform(ano_inicio):
     # Renomeamos 'pib_per_capita' para 'renda' para seguir o padrão da sua tabela
     query = f"""
     SELECT 
-        SUBSTR(id_municipio, 1, 6) as codmun,
+        id_municipio as codmun,
         ano,
-        pib_per_capita as renda
+        pib as renda
     FROM `basedosdados.br_ibge_pib.municipio`
     WHERE ano >= {ano_inicio}
     """

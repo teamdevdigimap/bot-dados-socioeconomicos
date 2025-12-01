@@ -1,117 +1,96 @@
 import pandas as pd
-import basedosdados as bd
-from utils.utils import get_ultimo_ano, add_values, update_chaves_municipios
+import numpy as np
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
 import os
-from dotenv import load_dotenv
+import shutil
+from utils.utils import get_municipio_codmun6, get_ultimo_ano, add_values
+from datetime import datetime
 
-# Carrega variáveis do arquivo .env
-load_dotenv()
+table_name = 'table_gini'
+def dataframe():
+    gini = pd.read_csv("GINI/ginibr.csv",encoding = "ISO-8859-1", on_bad_lines='skip', sep=';', skiprows=2, skipfooter=2)
+    gini['Município'] = gini['Município'].str.slice(stop=7)
+    gini['codmun6'] = gini['Município'].astype(int)
+    df = gini.melt(id_vars=['codmun6'], value_vars=['1991', '2000', '2010'], 
+                        var_name='ano', value_name='gini')
+    df['ano'] = df['ano'].astype(int)
+    df['gini'] = df['gini'].str.replace(",",".")
+    df = df[df['gini']!= '...']
+    df['gini'] = df['gini'].astype(float)
+    df
 
-# --- CONFIGURAÇÃO E DEBUG INICIAL ---
-TABLE_NAME = 'table_renda_per_capta'
+    mun = get_municipio_codmun6()
+    mun['codmun6'] = mun['codmun6'].astype(int) 
 
-# ATENÇÃO: Verifique se a variável de ambiente que guarda o ID do projeto é realmente 'USER'.
-# Geralmente é algo como 'GOOGLE_CLOUD_PROJECT' ou um nome personalizado definido no .env.
-BILLING_PROJECT_ID = os.environ.get('USER') 
-
-print(f"\n[DEBUG] --- Configurações Iniciais ---")
-print(f"[DEBUG] Tabela Alvo: {TABLE_NAME}")
-print(f"[DEBUG] Billing Project ID detectado: '{BILLING_PROJECT_ID}'")
-
-if not BILLING_PROJECT_ID:
-    print("[ERRO CRÍTICO] O Billing Project ID está vazio ou None. Verifique seu arquivo .env ou variáveis de sistema.")
-else:
-    print(f"[DEBUG] Credencial parece preenchida. Prosseguindo...")
-# ------------------------------------
-
-def download_and_transform(ano_inicio):
-    """
-    Busca o PIB per capita municipal no Base dos Dados para preencher a lacuna anual.
-    Retorna um DataFrame formatado para inserção.
-    """
-    
-    query = f"""
-    SELECT 
-        SUBSTR(id_municipio, 1, 6) as codmun,
-        ano,
-        pib_per_capita as renda
-    FROM `basedosdados.br_ibge_pib.municipio`
-    WHERE ano > {ano_inicio}
-    """
-
-    print(f"\n[DEBUG] --- Iniciando Download ---")
-    print(f"[DEBUG] Query montada para execução:\n{query.strip()}")
-    
-    try:
-        print(f"[DEBUG] Enviando requisição ao BigQuery usando projeto: {BILLING_PROJECT_ID}...")
-        
-        # O parâmetro billing_project_id é obrigatório para consultas no BigQuery
-        df = bd.read_sql(query, billing_project_id=BILLING_PROJECT_ID)
-        
-        print(f"[DEBUG] Retorno do BigQuery obtido. Linhas: {df.shape[0]}, Colunas: {df.shape[1]}")
-        
-    except Exception as e:
-        print(f"[ERRO] Falha ao consultar Base dos Dados: {e}")
-        # Dica extra de debug baseada no erro comum de projeto
-        if "Access Denied" in str(e) or "project" in str(e).lower():
-            print("[DICA] Verifique se o BILLING_PROJECT_ID é válido e se tem permissão de uso do BigQuery.")
-        return pd.DataFrame()
-
-    if df.empty:
-        print(f"[DEBUG] A consulta rodou com sucesso, mas retornou ZERO linhas. (Nenhum dado novo > {ano_inicio})")
-        return df
-
-    print(f"[DEBUG] Aplicando transformações de tipos nos dados...")
-    try:
-        # Garantia de tipagem para evitar erros no banco PostgreSQL
-        df['codmun'] = df['codmun'].astype(int)
-        df['ano'] = df['ano'].astype(int)
-        df['renda'] = df['renda'].astype(float)
-        print(f"[DEBUG] Transformação concluída. Amostra dos dados:\n{df.head(3)}")
-    except Exception as e:
-        print(f"[ERRO] Erro ao transformar tipos dos dados: {e}")
-        return pd.DataFrame()
-
+    df = pd.merge(df, mun, how='left', on='codmun6')
+    # df = df.drop(columns='codmun6')
+    df = df[df['ano'] >= 2010]
+    df.columns = ['codmun', 'ano','gini','codmun7','nome_sigla']
     return df
 
-def run_table_renda_per_capta():
-    print(f"\n[DEBUG] --- Iniciando Rotina Principal ---")
+def download_csv():
+    download_dir = "GINI"
+
+    # Verificar se o diretório existe, se não, cria-lo
+    if os.path.exists(download_dir):
+        shutil.rmtree(download_dir)
     
-    # 1. Verifica o último ano existente no banco para buscar apenas o delta
-    ultimo_ano = 0
+    if not os.path.exists(download_dir):
+        os.makedirs(download_dir)
+
+    # Configurar o Selenium para usar o Chrome
+    options = webdriver.ChromeOptions()
+
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-gpu")
+
+    download_dir = f'{os.getcwd()}/{download_dir}'
+
+    # Alterar o diretório de download
+    prefs = {
+        "download.default_directory": download_dir,  # Definir o diretório de download
+        "download.prompt_for_download": False,        # Desabilitar o prompt de download
+        "directory_upgrade": True                     # Forçar o Chrome a usar o diretório de download especificado
+    }
+    options.add_experimental_option("prefs", prefs)
+
+
+    
+    driver = webdriver.Chrome( options=options)
+
+    # Acessar a página
+    driver.get("http://tabnet.datasus.gov.br/cgi/ibge/censo/cnv/ginibr.def")
+
+    # Esperar a página carregar
+    time.sleep(15)
+
+    # Encontrar o botão de download e clicar
     try:
-        print(f"[DEBUG] Consultando último ano na tabela local '{TABLE_NAME}'...")
-        ultimo_ano = get_ultimo_ano(TABLE_NAME)
-        print(f"[DEBUG] Último ano encontrado no banco: {ultimo_ano}")
+        # Clicar no botão de download inicial
+        wait = WebDriverWait(driver, 10)  # Wait for up to 10 seconds
+        link = wait.until(EC.element_to_be_clickable((By.XPATH, '//td[@class="botao_opcao"]//a[text()="Copia como .CSV"]')))
+        link.click()
+        time.sleep(15)
+
     except Exception as e:
-        print(f"[ALERTA] Não foi possível obter o último ano (Tabela vazia ou erro de conexão): {e}")
-        print(f"[DEBUG] Assumindo ano inicial = 0 (baixar histórico completo).")
-        ultimo_ano = 0
-
-    # 2. Busca dados novos (Delta)
-    df_new = download_and_transform(ultimo_ano)
+        #print(f"Erro ao encontrar o botão de download ou selecionar o formato: {e}")
+        raise Exception(f"Erro ao clicar no link de download: {e}")
+    # # Fechar o navegador
+    driver.quit()
     
-    # 3. Insere e Atualiza
-    if not df_new.empty:
-        print(f"\n[DEBUG] --- Iniciando Inserção no Banco ---")
-        print(f"[DEBUG] Tentando inserir {len(df_new)} novos registros...")
-        
-        try:
-            add_values(df_new, TABLE_NAME)
-            print(f"[DEBUG] Função add_values executada.")
-        except Exception as e:
-            print(f"[ERRO] Falha na função add_values: {e}")
-            return # Interrompe se falhar aqui
-        
-        # 4. Atualiza colunas auxiliares
-        print(f"[DEBUG] Executando update_chaves_municipios para a tabela {TABLE_NAME}...")
-        try:
-            update_chaves_municipios(TABLE_NAME)
-            print(f"[DEBUG] Chaves atualizadas com sucesso.")
-        except Exception as e:
-             print(f"[ERRO] Falha ao atualizar chaves: {e}")
 
-        print("\n[SUCESSO] Atualização concluída.")
-    else:
-        print(f"\n[AVISO] Processo finalizado sem alterações. Motivo: DataFrame vazio (sem dados novos após {ultimo_ano}).")
+def run_table_gini():
+    download_csv() 
+    df = dataframe()
+    ultimo_ano = get_ultimo_ano(table_name) 
+    df = df[df['ano'] > ultimo_ano]
+    if df.shape[0]:
+        add_values(df,table_name)
 
