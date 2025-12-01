@@ -56,81 +56,119 @@ def download_municipios_shp():
 def territorio_run():
     
     try:
+        print("\nIniciando table_percentual_imoveis_rurais...\n")
         table_percentual_imoveis_rurais.run_table_percentual_imoveis_rurais()
+        print("\nFinalizando table_percentual_imoveis_rurais...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_percentual_imoveis_rurais \n{e}")  
     try:
+        print("\nIniciando table_percentual_imoveis_rurais...\n")
         table_percentual_imoveis_rurais.run_table_percentual_imoveis_rurais()
+        print("\nFinalizando table_percentual_imoveis_rurais...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_percentual_imoveis_rurais \n{e}")  
 
     try:
+        print("\nIniciando table_percentual_imoveis_assentamentos...\n")
         table_percentual_imoveis_assentamentos.run_table_percentual_imoveis_assentamentos()
+        print("\nFinalizando table_percentual_imoveis_assentamentos...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_percentual_imoveis_assentamentos \n{e}")
+    
+    #repetido, creio que pro caso de ter sido feito o download durante a execucao da tabela anterior
     try:
+        print("\nContinuando table_percentual_imoveis_assentamentos...\n")
         table_percentual_imoveis_assentamentos.run_table_percentual_imoveis_assentamentos()
+        print("\nFinalizando table_percentual_imoveis_assentamentos... de fato!\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_percentual_imoveis_assentamentos \n{e}")
         
         
     try:
+        print("\nIniciando table_percentual_terras_indigenas...\n")
         table_percentual_terras_indigenas.run_table_percentual_terras_indigenas()
+        print("\nFinalizando table_percentual_terras_indigenas...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_percentual_terras_indigenas \n{e}")   
         
     try:
+        print("\nIniciando table_percentual_areas_protegidas...\n")
         table_percentual_areas_protegidas.run_table_percentual_areas_protegidas()
+        print("\nFinalizando table_percentual_areas_protegidas...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_percentual_areas_protegidas \n{e}")   
+
+    #repetido, creio que pro caso de ter sido feito o download durante a execucao da tabela anterior
     try:
+        print("\nContinuando table_percentual_areas_protegidas...\n")
         table_percentual_areas_protegidas.run_table_percentual_areas_protegidas()
+        print("\nFinalizando table_percentual_areas_protegidas... de fato!\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_percentual_areas_protegidas \n{e}")   
         
     try:
+        print("\nIniciando table_conflitos...\n")
         table_conflitos.run_table_conflitos()
+        print("\nFinalizando table_conflitos...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_conflitos \n{e}")  
+    
+    #repetido, creio que pro caso de ter sido feito o download durante a execucao da tabela anterior
     try:
+        print("\nContinuando table_conflitos...\n")
         table_conflitos.run_table_conflitos()
+        print("\nFinalizando table_conflitos... de fato!\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_conflitos \n{e}")  
         
     try:
+        print("\nIniciando table_percentual_da_area_total_do_municipio...\n")
         table_percentual_da_area_total_do_municipio.run_table_percentual_da_area_total_do_municipio()
+        print("\nFinalizando table_percentual_da_area_total_do_municipio...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_percentual_da_area_total_do_municipio \n{e}")  
+    
+    #repetido, creio que pro caso de ter sido feito o download durante a execucao da tabela anterior
     try:
+        print("\nContinuando table_percentual_da_area_total_do_municipio...\n")
         table_percentual_da_area_total_do_municipio.run_table_percentual_da_area_total_do_municipio()
+        print("\nFinalizando table_percentual_da_area_total_do_municipio... de fato!\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_percentual_da_area_total_do_municipio \n{e}")  
 
 
     try:
+        print("\nIniciando table_numero_de_estabelecimentos_por_tipo_de_exploracao...\n")
         table_numero_de_estabelecimentos_por_tipo_de_exploracao.run_table_numero_de_estabelecimentos_por_tipo_de_exploracao()
+        print("\nFinalizando table_numero_de_estabelecimentos_por_tipo_de_exploracao...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_numero_de_estabelecimentos_por_tipo_de_exploracao \n{e}")      
+    
+    #repetido, creio que pro caso de ter sido feito o download durante a execucao da tabela anterior
     try:
+        print("\nContinuando table_numero_de_estabelecimentos_por_tipo_de_exploracao...\n")
         table_numero_de_estabelecimentos_por_tipo_de_exploracao.run_table_numero_de_estabelecimentos_por_tipo_de_exploracao()
+        print("\nFinalizando table_numero_de_estabelecimentos_por_tipo_de_exploracao... de fato!\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_numero_de_estabelecimentos_por_tipo_de_exploracao \n{e}")      
         
     try:
+        print("\nIniciando tableestabelecimentos_agropecuarios...\n")
         table_estabelecimentos_agropecuarios.run_table_estabelecimentos_agropecuarios()
+        print("\nFinalizando table_estabelecimentos_agropecuarios...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_estabelecimentos_agropecuarios \n{e}")

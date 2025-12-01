@@ -17,49 +17,65 @@ from tables.Educacao.table_taxas_de_reprovacao import table_taxas_de_reprovacao
 def educacao_run():
   
     try:
+        print("\nIniciando table_estabelecimentos_educacao_basica...\n")
         table_estabelecimentos_educacao_basica.run_table_estabelecimentos_educacao_basica()
+        print("\nFinalizando table_estabelecimentos_educacao_basica...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_estabelecimentos_educacao_basica \n{e}")  
 
     try:
+        print("\nIniciando table_taxas_de_aprovacao...\n")
         table_taxas_de_aprovacao.run_table_taxas_de_aprovacao()
+        print("\nFinalizando table_taxas_de_aprovacao...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_taxas_de_aprovacao \n{e}")
 
     try:
+        print("\nIniciando table_nota_saeb_ensino_medio...\n")
         table_nota_saeb_ensino_medio.run_table_nota_saeb_ensino_medio()
+        print("\nFinalizando table_nota_saeb_ensino_medio...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_nota_saeb_ensino_medio \n{e}")  
 
     try:
+        print("\nIniciando table_nota_saeb_anos_finais_fundamental...\n")
         table_nota_saeb_anos_finais_fundamental.run_table_nota_saeb_anos_finais_fundamental()
+        print("\nFinalizando table_nota_saeb_anos_finais_fundamental...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_nota_saeb_anos_finais_fundamental \n{e}")
 
     try:
+        print("\nIniciando table_nota_saeb_anos_iniciais_fundamental...\n")
         table_nota_saeb_anos_iniciais_fundamental.run_table_nota_saeb_anos_iniciais_fundamental()
+        print("\nFinalizando table_nota_saeb_anos_iniciais_fundamental...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_nota_saeb_anos_finais_fundamental \n{e}")
 
     try:
+        print("\nIniciando table_taxa_de_aprovacao_ideb_ensino_medio...\n")
         table_taxa_de_aprovacao_ideb_ensino_medio.run_ttable_taxa_de_aprovacao_ideb_ensino_medio()
+        print("\nFinalizando table_taxa_de_aprovacao_ideb_ensino_medio...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_taxa_de_aprovacao_ideb_ensino_medio \n{e}")
 
     try:
+        print("\nIniciando table_taxa_de_aprovacao_ideb_anos_iniciais_fundamental...\n")
         table_taxa_de_aprovacao_ideb_anos_iniciais_fundamental.run_table_taxa_de_aprovacao_ideb_anos_iniciais_fundamental()
+        print("\nFinalizando table_taxa_de_aprovacao_ideb_anos_iniciais_fundamental...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_taxa_de_aprovacao_ideb_anos_iniciais_fundamental \n{e}")
 
     try:
+        print("\nIniciando table_taxa_de_aprovacao_ideb_anos_finais_fundamental...\n")
         table_taxa_de_aprovacao_ideb_anos_finais_fundamental.run_table_taxa_de_aprovacao_ideb_anos_finais_fundamental()
+        print("\nFinalizando table_taxa_de_aprovacao_ideb_anos_finais_fundamental...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_taxa_de_aprovacao_ideb_anos_finais_fundamental \n{e}")
@@ -101,7 +117,9 @@ def educacao_run():
         print(f"Erro na tabela table_inse \n{e}")
 
     try:
+        print("\nIniciando table_taxas_de_reprovacao...\n")
         table_taxas_de_reprovacao.run_table_taxas_de_reprovacao()
+        print("\nFinalizando table_taxas_de_reprovacao...\n")
         pass
     except Exception as e:
         print(f"Erro na tabela table_taxas_de_reprovacao \n{e}")

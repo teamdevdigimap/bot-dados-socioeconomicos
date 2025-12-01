@@ -1,4 +1,4 @@
-print("Iniciando main.py ...")
+print("Iniciando Atualizações ...\n\n")
 from Renda import renda_run
 from Habitacao import habitacao_run
 from Emprego import emprego_run
@@ -61,6 +61,8 @@ if __name__ == "__main__":
     input_func = input("Digite o nome ou número da função a ser executada: \n1. Renda \n2. Habitacao \n3. Emprego \n4. Demografia \n5. Financas \n6. Educacao \n7. Seguranca \n8. Territorio \n9. Todas \nResposta: ").strip().lower()
     if input_func == "renda" or input_func == "1":
         renda()
+    # elif input_func == "saude" or input_func == "0":
+    #     saude() 
     elif input_func == "habitacao" or input_func == "2":
         habitacao()
     elif input_func == "emprego" or input_func == "3":
@@ -84,6 +86,7 @@ if __name__ == "__main__":
         educacao()
         seguranca()
         territorio()
+        # saude()
     else:
         logging.error("Função inválida. Por favor, tente novamente.")
 
