@@ -2,7 +2,7 @@ print("Iniciando main.py ...")
 from Renda import renda_run
 from Habitacao import habitacao_run
 from Emprego import emprego_run
-#from Saude import saude_run
+from Saude import saude_run
 from Territorio import territorio_run
 from Demografia import demografia_run
 from Financas import financa_run
@@ -37,10 +37,10 @@ def financas():
     financa_run()
     logging.info("Terminou finanças")
 
-# def saude():
-#     logging.info("Começa saúde")
-#     saude_run()
-#     logging.info("Terminou saúde")
+def saude():
+    logging.info("Começa saúde")
+    saude_run()
+    logging.info("Terminou saúde")
 
 def educacao():
     logging.info("Começa educação")
@@ -58,8 +58,10 @@ def territorio():
     logging.info("Terminou território")
 
 if __name__ == "__main__":
-    input_func = input("Digite o nome ou número da função a ser executada: \n1. Renda \n2. Habitacao \n3. Emprego \n4. Demografia \n5. Financas \n6. Educacao \n7. Seguranca \n8. Territorio \n9. Todas \nResposta: ").strip().lower()
-    if input_func == "renda" or input_func == "1":
+    input_func = input("Digite o nome ou número da função a ser executada: \n0. Saúde \n1. Renda \n2. Habitacao \n3. Emprego \n4. Demografia \n5. Financas \n6. Educacao \n7. Seguranca \n8. Territorio \n9. Todas \nResposta: ").strip().lower()
+    if input_func == "saude" or input_func == "0":
+        saude() 
+    elif input_func == "renda" or input_func == "1":
         renda()
     elif input_func == "habitacao" or input_func == "2":
         habitacao()
@@ -84,8 +86,6 @@ if __name__ == "__main__":
         educacao()
         seguranca()
         territorio()
+        # saude()
     else:
         logging.error("Função inválida. Por favor, tente novamente.")
-
-# if __name__ == "__main__":
-#     territorio()

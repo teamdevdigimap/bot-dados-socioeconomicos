@@ -4,6 +4,17 @@ from datetime import datetime
 import pandas as pd
 from utils.utils import get_municipio_codmun6, get_ultimo_mes_ano, add_values
 
+'''
+Ordem dos parâmetros de pysus.online.data.cnes.download:
+{'group': 'Serviço Especializado',
+ 'last_update': '2023-02-17 07:31AM',
+ 'month': 'Janeiro',
+ 'name': 'SRSP2301.dbc',
+ 'size': '1.6 MB',
+ 'uf': 'São Paulo',
+ 'year': 2023}
+'''
+
 table_name = 'table_saude_leitos_internacao'
 
 estados_brasil =[
@@ -48,7 +59,8 @@ def run_table_saude_leitos_internacao():
             ano = ultima_data.year
             mes = ultima_data.month
             for estado in estados_brasil:
-                df = download(group='LT', year=ano, month=mes, state=estado)
+                df = download('LT', estado, ano, mes).to_dataframe()
+                df['QT_EXIST'] = pd.to_numeric(df['QT_EXIST'], errors='coerce').fillna(0)
                 df = df.groupby('CODUFMUN')['QT_EXIST'].sum().reset_index()
                 df['mes'] = mes
                 df['ano'] = ano

@@ -5,7 +5,44 @@ from dateutil.relativedelta import relativedelta
 import requests
 import json
 from utils.utils import get_municipio_codmun6, get_ultimo_mes_ano, add_values
+import os
+import logging
 
+logging.basicConfig(level=logging.INFO)
+
+'''
+Ordem dos parâmetros de pysus.online.data.cnes.download:
+{'group': 'Serviço Especializado',
+ 'last_update': '2023-02-17 07:31AM',
+ 'month': 'Janeiro',
+ 'name': 'SRSP2301.dbc',
+ 'size': '1.6 MB',
+ 'uf': 'São Paulo',
+ 'year': 2023}
+ 
+ 
+ download(group: str, states: Union[str, list], years: Union[str, list, int], months: Union[str, list, int], data_dir: str = '/root/pysus') -> list
+    Download CNES records for group, state, year and month and returns a
+    list of local parquet files
+    :param group:
+        LT – Leitos - A partir de Out/2005
+        ST – Estabelecimentos - A partir de Ago/2005
+        DC - Dados Complementares - A partir de Ago/2005
+        EQ – Equipamentos - A partir de Ago/2005
+        SR - Serviço Especializado - A partir de Ago/2005
+        HB – Habilitação - A partir de Mar/2007
+        PF – Profissional - A partir de Ago/2005
+        EP – Equipes - A partir de Abr/2007
+        IN – Incentivos - A partir de Nov/2007
+        RC - Regra Contratual - A partir de Mar/2007
+        EE - Estabelecimento de Ensino - A partir de Mar/2007
+        EF - Estabelecimento Filantrópico - A partir de Mar/2007
+        GM - Gestão e Metas - A partir de Jun/2007
+    :param months: 1 to 12, can be a list of years
+    :param states: 2 letter state code, can be a list of UFs
+    :param years: 4 digit integer, can be a list of years
+'''
+# help(download)
 table_name = 'table_total_de_medicos_por_municipio'
 
 data = {
@@ -25,6 +62,7 @@ data = {
 
 # Criação do DataFrame
 medicos = pd.DataFrame(data)
+
 
 estados_brasil =[
     'AC',  # Acre
@@ -57,7 +95,9 @@ estados_brasil =[
 ]
 
 def dataframe(estado, ano, mes):
-    df = download(state=estado, year=ano, month=mes, group='PF')
+    df = download('PF', estado, ano, mes).to_dataframe()
+    #logging.info(f"Dados baixados para {estado} - {mes}/{ano}, total de registros: {df.shape[0]}")
+    #logging.info(f"\nO dataframe gerado é {df.head()}")
     ids = ['225151', '225225', '225125', '225142', '225130', '225250', '225124', '225133', '225355']
     pd.set_option('display.max_columns', None)
     df_cbo = df[df['CBO'].isin(ids)]
@@ -114,13 +154,19 @@ def dataframe(estado, ano, mes):
 
     df = pd.merge(counts,populacao, how='left')
 
-    df['habitante'] = df['habitante'].astype(int)
-    df['total'] = df['total'].astype(int) 
-    df['medicos1000habitantes'] = (df['total'] / df['habitante']) * 1000
+    # Tratar valores NaN
+    df['habitante'] = pd.to_numeric(df['habitante'], errors='coerce').fillna(0).astype(int)
+    df['total'] = df['total'].astype(int)
+    
+    # Evita divisão por zero
+    df['medicos1000habitantes'] = df.apply(
+        lambda row: (row['total'] / row['habitante']) * 1000 if row['habitante'] > 0 else 0, 
+        axis=1
+    )
+    
     df['ano'] = ano
     df['mes'] = mes
     return df
-
 
 def run_table_total_de_medicos_por_municipio():
     try:
