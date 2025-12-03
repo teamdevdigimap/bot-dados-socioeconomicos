@@ -14,7 +14,9 @@ from tables.Saude.taxa_de_leitos_de_internecao import taxa_de_leitos_de_internec
 def saude_run():
     
     try:
+        print("\nIniciando tabela de despesas com saude...\n")
         table_despesas_com_saude.run_table_despesas_com_saude()
+        print("\nTabela de despesas com saude finalizada...\n")
     except Exception as e:
         print(f"Erro na tabela table_despesas_com_saude \n{e}")  
         
@@ -24,44 +26,60 @@ def saude_run():
         print(f"Erro na tabela table_total_de_medicos_por_municipio \n{e}")  
         
     try:
+        print("\nIniciando table_equipamentos_sus_por_tipos...\n")
         table_equipamentos_sus_por_tipos.run_table_equipamentos_sus_por_tipos()
+        print("\ntable_equipamentos_sus_por_tipos finalizada...\n")
     except Exception as e:
         print(f"Erro na tabela table_equipamentos_sus_por_tipos \n{e}")  
         
     try:
+        print("\nIniciando table_nascimentos...\n")
         table_nascimentos.run_table_nascimentos()
+        print("\ntable_nascimentos finalizada...\n")
     except Exception as e:
         print(f"Erro na tabela table_nascimentos \n{e}") 
         
     try:
+        print("\nIniciando table_obitos_prematuros...\n")
         table_saude_obitos_prematuros.run_table_saude_obitos_prematuros()
+        print("\ntable_obitos_prematuros finalizada...\n")
     except Exception as e:
         print(f"Erro na tabela table_saude_obitos_prematuros \n{e}")
         
     try:
+        print("\nIniciando table_obitos...\n")
         table_obitos.run_table_obitos()
+        print("\ntable_obitos finalizada...\n")
     except Exception as e:
         print(f"Erro na tabela table_obitos \n{e}")
         
     try:
+        print("\nIniciando table_saude_internacoes_hospitalares...\n")
         table_saude_internacoes_hospitalares.run_table_saude_internacoes_hospitalares()
+        print("\ntable_saude_internacoes_hospitalares finalizada...\n")
     except Exception as e:
         print(f"Erro na tabela table_saude_internacoes_hospitalares \n{e}")   
         
         
     try:
+        print("\nIniciando table_taxa_de_producao_ambulatorial...\n")
         table_taxa_de_producao_ambulatorial.run_table_taxa_de_producao_ambulatorial()
+        print("\ntable_taxa_de_producao_ambulatorial finalizada...\n")
     except Exception as e:
         print(f"Erro na tabela table_taxa_de_producao_ambulatorial \n{e}")      
         
         
     try:
+        print("\nIniciando tabela de saude prod ambula qtd aprovada...\n")
         table_saude_prod_ambula_qtd_aprovada.run_table_saude_prod_ambula_qtd_aprovada()
+        print("\nTabela de saude prod ambula qtd aprovada finalizada...\n")
     except Exception as e:
         print(f"Erro na tabela table_saude_prod_ambula_qtd_aprovada \n{e}")          
     
     try:
+        print("\nIniciando tabela de obitos por causas evitaveis em menores de 5 anos...\n")
         table_obitos_por_causas_evitaveis_em_menores_de_5_anos.run_table_obitos_por_causas_evitaveis_em_menores_de_5_anos()
+        print("\nTabela de obitos por causas evitaveis em menores de 5 anos finalizada...\n")
     except Exception as e:
         print(f"Erro na tabela table_obitos_por_causas_evitaveis_em_menores_de_5_anos \n{e}") 
         
@@ -73,6 +91,8 @@ def saude_run():
         
 
     try:
+        print("\nIniciando tabela de taxa de leitos de internecao...\n")
         taxa_de_leitos_de_internecao.run_taxa_de_leitos_de_internecao()
+        print("\nTabela de taxa de leitos de internecao finalizada...\n")
     except Exception as e:
         print(f"Erro na tabela taxa_de_leitos_de_internecao \n{e}")    
