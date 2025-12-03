@@ -1,13 +1,23 @@
 print("Iniciando Atualizações ...\n\n")
+print("Importando módulos de renda...\n")
 from Renda import renda_run
+print("Importando módulos de habitação...\n")
 from Habitacao import habitacao_run
+print("Importando módulos de emprego...\n")
 from Emprego import emprego_run
-from Saude import saude_run
+# print("Importando módulos de saúde...\n")
+# from Saude import saude_run
+print("Importando módulos de território...\n")
 from Territorio import territorio_run
+print("Importando módulos de demografia...\n")
 from Demografia import demografia_run
+print("Importando módulos de finanças...\n")
 from Financas import financa_run
+print("Importando módulos de educação...\n")
 from Educacao import educacao_run
+print("Importando módulos de segurança...\n")
 from Seguranca import seguranca_run
+print("Importações concluídas.\n\n")
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -39,7 +49,7 @@ def financas():
 
 def saude():
     logging.info("Começa saúde")
-    saude_run()
+    # saude_run()
     logging.info("Terminou saúde")
 
 def educacao():
