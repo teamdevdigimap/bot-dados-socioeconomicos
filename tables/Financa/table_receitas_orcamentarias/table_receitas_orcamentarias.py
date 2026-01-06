@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 table_name = 'table_receitas_orcamentarias'
-#table_name = 'table_receitas_orcamentarias'
 ultimo_ano = get_ultimo_ano(table_name) + 1
 ano_atual = datetime.now().year + 1
 
@@ -56,26 +55,38 @@ def processar_dataframe_excel(caminho_arquivo):
             # 2. Se falhar, tenta ler como CSV (comum em arquivos que dão erro de 'zip')
             print("Não é um .xlsx válido. Tentando ler como CSV...")
             df = pd.read_csv(caminho_arquivo, sep=None, engine='python', encoding='utf-8-sig')
+            
         # 2. Limpeza e conversão da coluna 'valor' 
         # (Trata casos onde o número vem como string '1.234,56')
-        if df['valor'].dtype == 'object':
-            df['valor'] = (
-                df['valor']
-                .astype(str)
-                .str.replace('.', '', regex=False)
-                .str.replace(',', '.', regex=False)
-                .astype(float)
-            )
+        df.columns = [c.strip().lower() for c in df.columns]
+        if 'valor' in df.columns and df['valor'].dtype == 'object':
+            df['valor'] = (df['valor'].astype(str)
+                           .str.replace('.', '', regex=False)
+                           .str.replace(',', '.', regex=False)
+                           .astype(float))
 
         # 3. Adiciona a coluna 'ano' com o valor fixo 2024
         df['ano'] = 2024
 
         # 4. Garante que o codmun seja tratado como texto (conforme DDL)
         df['codmun'] = df['codmun'].astype(str)
+        
+        mun = get_municipio()
+        df = pd.merge(df, mun, on='codmun', how='left')
 
         # 5. Seleciona apenas as colunas que existem no DDL (exceto as automáticas)
         # Ordem: codmun, deducoes, conta, valor, ano
-        df = df[['codmun', 'deducoes', 'conta', 'valor', 'ano']]
+        #df = df[['codmun', 'deducoes', 'conta', 'valor', 'ano']]
+        
+        df['nome_sigla'] = None
+
+        #formato no banco:
+        #codmun; deducoes; valor; ano; nome_sigla; createdat;
+
+        colunas_finais = ['codmun', 'deducoes', 'valor', 'ano', 'nome_sigla']
+        df = df[colunas_finais]
+
+        print(f"DataFrame processado:\n{df.head(10)}")
 
         if not df.empty:
             print(f"Iniciando inserção de {len(df)} linhas na tabela {table_name}...")
@@ -96,12 +107,11 @@ def processar_dataframe_excel(caminho_arquivo):
 
 def run_table_receitas_orcamentarias():
     try:
-        #datafFrame()
-        diretorio_atual = os.path.dirname(os.path.abspath(__file__))
-        caminho_excel = os.path.join(diretorio_atual, 'receitas_orcamentarias_2024.xlsx')
-        processar_dataframe_excel(caminho_excel)
+        dataframe()
+        # diretorio_atual = os.path.dirname(os.path.abspath(__file__))
+        # caminho_excel = os.path.join(diretorio_atual, 'receitas_orcamentarias_2024.xlsx')
+        # processar_dataframe_excel(caminho_excel)
         # print(f"Diretório atual: {os.getcwd()}")
         # print(f"Arquivos no diretório atual: {os.listdir('.')}")
     except Exception as e:
         raise Exception(f"Erro ao atualizar tabela {table_name}: {e}")  
-
