@@ -23,9 +23,14 @@ def add_values(df, table_name):
 
         # Cria o engine de conexão
         engine = create_engine(url)
+        
+        if '.' in table_name:
+            schema, name =  table_name.split('.')
+        else:
+            schema, name = None, table_name
 
         # Adiciona o DataFrame à tabela no banco de dados
-        df.to_sql(table_name, engine, if_exists='append', index=False)
+        df.to_sql(name, engine, schema=schema, if_exists='append', index=False)
         print(f"Tabela {table_name} foi atualizada")
 
     except Exception as e:
@@ -92,18 +97,6 @@ def get_ultimo_ano(table_name):
             cur.close()
             conn.close()
 
-def add_values(df,table_name):
-    # Adiciona valores no banco
-    
-    # Cria a URL de conexão
-    url = f"postgresql://{conn_params['user']}:{conn_params['password']}@{conn_params['host']}:{conn_params['port']}/{conn_params['dbname']}"
-
-    # Cria o engine de conexão
-    engine = create_engine(url)
-    # Adiciona o DataFrame à tabela no banco de dados
-    df.to_sql(table_name, engine, if_exists='append', index=False)
-    engine.dispose()
-    print(f"Tabela {table_name} foi atualizado")
 
 def get_ultimo_mes_ano(table_name):
     try:
