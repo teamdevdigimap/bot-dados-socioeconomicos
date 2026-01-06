@@ -60,6 +60,9 @@ def emprego_run():
     try:
         print('\nIniciando table_pib_per_capita_municipal...\n')
         table_pib_per_capita_municipal.run_table_pib_per_capita_municipal()
+        # arquivo_excel = "C:/Users/matheus.souza/Downloads/base_de_dados_2010_2023_xlsx/PIB dos Municípios - base de dados 2010-2023.xlsx" 
+        # print('tentativa de inserir manualmente')
+        # table_pib_per_capita_municipal.run_table_pib_per_capita_municipal_historico(arquivo_excel)
         print('\nFinalizando table_pib_per_capita_municipal...\n')
     except Exception as e:
         print(f"Erro na tabela table_pib_per_capita_municipal \n{e}")     
