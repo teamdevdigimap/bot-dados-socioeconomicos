@@ -17,6 +17,8 @@ print("Importando módulos de educação...\n")
 from Educacao import educacao_run
 print("Importando módulos de segurança...\n")
 from Seguranca import seguranca_run
+print("Importando módulos de social...\n")
+from Social import social_run
 print("Importações concluídas.\n\n")
 import logging
 
@@ -67,8 +69,13 @@ def territorio():
     territorio_run()
     logging.info("Terminou território")
 
+def social():
+    logging.info("Começa social")
+    social_run()
+    logging.info("Terminou social")
+
 if __name__ == "__main__":
-    input_func = input("Digite o nome ou número da função a ser executada: \n0. Saude \n1. Renda \n2. Habitacao \n3. Emprego \n4. Demografia \n5. Financas \n6. Educacao \n7. Seguranca \n8. Territorio \n9. Todas \nResposta: ").strip().lower()
+    input_func = input("Digite o nome ou número da função a ser executada: \n0. Saude \n1. Renda \n2. Habitacao \n3. Emprego \n4. Demografia \n5. Financas \n6. Educacao \n7. Seguranca \n8. Territorio \n9. Social \n10. Todas \nResposta: ").strip().lower()
     if input_func == "renda" or input_func == "1":
         renda()
     elif input_func == "saude" or input_func == "0":
@@ -87,7 +94,9 @@ if __name__ == "__main__":
         seguranca()
     elif input_func == "territorio" or input_func == "8":
         territorio()
-    elif input_func == "todas" or input_func == "9":
+    elif input_func == "social" or input_func == "9":
+        social()
+    elif input_func == "todas" or input_func == "10":
         renda()
         habitacao()
         emprego()
