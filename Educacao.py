@@ -13,6 +13,7 @@ from tables.Educacao.table_fluxo_da_educacao_superior import table_fluxo_da_educ
 from tables.Educacao.table_taxas_de_abandono import table_taxas_de_abandono
 from tables.Educacao.table_inse import table_inse
 from tables.Educacao.table_taxas_de_reprovacao import table_taxas_de_reprovacao
+from tables.Educacao.table_indicador_crianca_alfabetizada.table_indicador_crianca_alfabetizada import run_indicador_crianca_alfabetizada
 
 def educacao_run():
   
@@ -123,6 +124,17 @@ def educacao_run():
         pass
     except Exception as e:
         print(f"Erro na tabela table_taxas_de_reprovacao \n{e}")
+
+    # try: 
+    #     print("\nIniciando run_indicador_crianca_alfabetizada...\n")
+    #     # Substitua pelo caminho do seu arquivo
+    #     # arquivo_excel = "C:/Users/matheus.souza/Downloads/resultados_e_metas_municipios_2024.xlsx"
+    #     arquivo_excel = None 
+    #     run_indicador_crianca_alfabetizada(arquivo_excel)
+    #     print("\nFinalizando run_indicador_crianca_alfabetizada...\n")
+    #     pass
+    # except Exception as e:
+    #     print(f"Erro na tabela run_indicador_crianca_alfabetizada \n{e}")
     
 
 
