@@ -5,9 +5,11 @@ from tables.Demografia.table_populacao_estimada import table_populacao_estimada
 from tables.Demografia.table_demografia import table_demografia
 from tables.Demografia.table_taxa_de_envelhecimento import table_taxa_de_envelhecimento
 from tables.Demografia.table_populacao_residente_por_sexo_e_idade import table_populacao_residente_por_sexo_e_idade
+from tables.Demografia.table_domicilios_particulares_censo_2022 import table_domicilios_particulares_censo_2022
 
 ##### DEMOGRAFIA #####
 def demografia_run():
+
     try:
         print("\nIniciando table_populacao_residente_por_cor_ou_raca...\n")
         table_populacao_residente_por_cor_ou_raca.run_table_populacao_residente_por_cor_ou_raca()
@@ -63,3 +65,11 @@ def demografia_run():
         pass
     except Exception as e:
         print(f"Erro na tabela table_densidade_domiciliar \n{e}")
+
+    # try: 
+    #     print("\nIniciando table_domicilios_particulares_censo_2022...\n")
+    #     table_domicilios_particulares_censo_2022.run_table_domicilios_particulares_censo_2022()
+    #     print("\nFinalizando table_domicilios_particulares_censo_2022...\n")
+    #     pass
+    # except Exception as e:
+    #     print(f"Erro na tabela table_domicilios_particulares_censo_2022 \n{e}")
