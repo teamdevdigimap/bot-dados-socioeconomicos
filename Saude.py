@@ -10,6 +10,7 @@ from tables.Saude.table_saude_prod_ambula_qtd_aprovada import table_saude_prod_a
 from tables.Saude.table_obitos_por_causas_evitaveis_em_menores_de_5_anos import table_obitos_por_causas_evitaveis_em_menores_de_5_anos
 from tables.Saude.table_saude_leitos_internacao import table_saude_leitos_internacao
 from tables.Saude.taxa_de_leitos_de_internecao import taxa_de_leitos_de_internecao
+from tables.Saude.table_mortalidade_infantil.table_mortalidade_infantil import run_table_mortalidade_infantil
 
 def saude_run():
     
@@ -95,4 +96,11 @@ def saude_run():
         taxa_de_leitos_de_internecao.run_taxa_de_leitos_de_internecao()
         print("\nTabela de taxa de leitos de internecao finalizada...\n")
     except Exception as e:
-        print(f"Erro na tabela taxa_de_leitos_de_internecao \n{e}")    
+        print(f"Erro na tabela taxa_de_leitos_de_internecao \n{e}")  
+
+    try:
+        print("\nIniciando tabela de mortalidade infantil...\n")
+        run_table_mortalidade_infantil()
+        print("\nTabela de mortalidade infantil finalizada...\n")
+    except Exception as e:
+        print(f"Erro na tabela table_mortalidade_infantil \n{e}")
